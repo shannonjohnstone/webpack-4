@@ -1,30 +1,20 @@
 const path = require('path');
 const webpack = require('webpack');
+const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const htmlWebpackPlugin = require('html-webpack-plugin');
+const OptimizeCssPlugin = require('optimize-css-assets-webpack-plugin');
+// const isProd = precess.env.NODE_ENV === 'production';
 
 module.exports = {
   entry: {
-    main: [
-      "babel-runtime/regenerator",
-      "webpack-hot-middleware/client?reload=true",
-      "./src/main.js"
-    ]
+    main: ["./src/main.js"]
   },
-  mode: "development",
+  mode: "production",
   output: {
     filename: "[name]-bundle.js",
     path: path.resolve(__dirname, '../dist'),
     publicPath: "/"
   },
-  devServer: {
-    contentBase: 'dist',
-    overlay: true,
-    hot: true,
-    stats: {
-      colors: true
-    }
-  },
-  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -40,7 +30,7 @@ module.exports = {
         test: /\.css$/,
         use: [
           {
-            loader: "style-loader"
+            loader: MiniCSSExtractPlugin.loader
           },
           {
             loader: "css-loader"
@@ -72,7 +62,10 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    new OptimizeCssPlugin({
+      filename: "[name]-[contenthash].css"
+    }),
+    new MiniCSSExtractPlugin(),
     new htmlWebpackPlugin({
       template: './src/index.ejs',
       title: 'Link\'s Journal'
