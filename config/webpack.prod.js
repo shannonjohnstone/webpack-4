@@ -5,7 +5,8 @@ const htmlWebpackPlugin = require('html-webpack-plugin');
 const OptimizeCssPlugin = require('optimize-css-assets-webpack-plugin');
 const MinifyPlugin = require('babel-minify-webpack-plugin');
 const UglifyjsPlugin = require('uglifyjs-webpack-plugin');
-// const isProd = precess.env.NODE_ENV === 'production';
+const CompressionPlugin = require('compression-webpack-plugin');
+const BrotliPlugin = require('brotli-webpack-plugin');
 
 module.exports = env => {
   return {
@@ -65,8 +66,6 @@ module.exports = env => {
       ]
     },
     plugins: [
-      new UglifyjsPlugin(),
-      new MinifyPlugin(),
       new OptimizeCssPlugin({
         filename: "[name]-[contenthash].css"
       }),
@@ -79,7 +78,13 @@ module.exports = env => {
         "process.env": {
           NODE_ENV: JSON.stringify(env.NODE_ENV)
         }
-      })
+      }),
+      new MinifyPlugin(),
+      new UglifyjsPlugin(),
+      new CompressionPlugin({
+        algorithm: "gzip"
+      }),
+      new BrotliPlugin()
     ]
   }
 }

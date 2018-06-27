@@ -5,7 +5,6 @@ const server = express();
 
 const isProd = process.env.NODE_ENV === 'production';
 
-console.log(isProd, 'isProd...');
 if (!isProd) {
   const webpack = require('webpack');
   const config = require('../../config/webpack.dev.js');
@@ -19,9 +18,11 @@ if (!isProd) {
   console.log('Running express webpack middleware ---------------------------');
 }
 
-server.use(express.static('dist'));
+const expressStaticGzip = require('express-static-gzip');
+server.use(expressStaticGzip('dist', {
+  enableBrotli: true
+}));
 
 server.listen(process.env.PORT, () => {
-  // const message = isProd ? 'Server Listening' : `Server is listing on http://localhost:${process.env.PORT}`
   console.log(`Server is listing on http://localhost:${process.env.PORT}`);
 });
