@@ -1,11 +1,13 @@
 const path = require('path');
 const webpack = require('webpack');
 const htmlWebpackPlugin = require('html-webpack-plugin');
+const WebpackBundleAanalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   entry: {
     main: [
       "babel-runtime/regenerator",
+      "babel-register",
       "webpack-hot-middleware/client?reload=true",
       "./src/main.js"
     ]
@@ -22,6 +24,18 @@ module.exports = {
     hot: true,
     stats: {
       colors: true
+    }
+  },
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+      cacheGroups: {
+        vendor: {
+          name: "vendor",
+          chunks: "initial",
+          minChunks: 2
+        }
+      }
     }
   },
   devtool: 'source-map',
@@ -69,13 +83,29 @@ module.exports = {
           }
         ]
       },
+      {
+        test: /\.md$/,
+        use: [
+          {
+            loader: "markdown-with-front-matter-loader"
+          }
+        ]
+      },
     ]
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      "process.env": {
+        NODE_ENV: JSON.stringify("development")
+      }
+    }),
     new htmlWebpackPlugin({
       template: './src/index.ejs',
       title: 'Link\'s Journal'
+    }),
+    new WebpackBundleAanalyzer({
+      generateStateFile: true
     })
   ]
 }

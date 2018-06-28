@@ -1,23 +1,50 @@
 body {
   margin: 0;
   background-color: #444;
+  font-family: Helvetica;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 .profile {
-  height: 100vh;
   display: flex;
+  -ms-align-items: center;
   align-items: center;
   justify-content: center;
+  height: 100vh;
   flex-flow: column;
 }
 
 img {
   border-radius: 100%;
+  border: 5px;
   width: 300px;
+  box-shadow: 0 0 20px black;
 }
 
 h1 {
-  color: white;
   font-size: 5em;
   font-family: sans-serif;
+  color: white;
+  text-shadow: 0 0 20px black;
+  text-align: center;
+}
+
+.content {
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.content {
+  background-color: #ffffe0;
+  box-shadow: 0 0 20px black;
+  font-family: sans-serif;
+  line-height: 1.5em;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
 }

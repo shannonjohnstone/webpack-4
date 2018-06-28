@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-
-import Counter from './counter'
+import data from '../data/bio';
+import AppRoot from './components/AppRoot'
 
 ReactDOM.render(
-  <Counter />,
+  <AppRoot data={data} />,
   document.getElementById('root')
 )
