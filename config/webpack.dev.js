@@ -5,6 +5,7 @@ const WebpackBundleAanalyzer = require('webpack-bundle-analyzer').BundleAnalyzer
 
 module.exports = {
   entry: {
+    vendor: ['react'],
     main: [
       "babel-runtime/regenerator",
       "babel-register",
@@ -26,18 +27,18 @@ module.exports = {
       colors: true
     }
   },
-  optimization: {
-    splitChunks: {
-      chunks: "all",
-      cacheGroups: {
-        vendor: {
-          name: "vendor",
-          chunks: "initial",
-          minChunks: 2
-        }
-      }
-    }
-  },
+  // optimization: {
+  //   splitChunks: {
+  //     chunks: "all",
+  //     cacheGroups: {
+  //       vendor: {
+  //         name: "vendor",
+  //         chunks: "initial",
+  //         minChunks: 2
+  //       }
+  //     }
+  //   }
+  // },
   devtool: 'source-map',
   module: {
     rules: [
@@ -100,12 +101,14 @@ module.exports = {
         NODE_ENV: JSON.stringify("development")
       }
     }),
-    new htmlWebpackPlugin({
-      template: './src/index.ejs',
-      title: 'Link\'s Journal'
-    }),
+    // new htmlWebpackPlugin({
+    //   template: './src/index.ejs',
+    //   inject: true,
+    //   title: 'Link\'s Journal'
+    // }),
     new WebpackBundleAanalyzer({
-      generateStateFile: true
+      generateStateFile: true,
+      openAnalyzer: false
     })
   ]
 }

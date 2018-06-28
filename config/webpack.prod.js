@@ -90,10 +90,11 @@ module.exports = env => {
         filename: "[name]-[contenthash].css"
       }),
       new MiniCSSExtractPlugin(),
-      new htmlWebpackPlugin({
-        template: './src/index.ejs',
-        title: 'Link\'s Journal'
-      }),
+      // new htmlWebpackPlugin({
+      //   template: './src/index.ejs',
+      //   inject: true,
+      //   title: 'Link\'s Journal'
+      // }),
       new webpack.DefinePlugin({
         "process.env": {
           NODE_ENV: JSON.stringify(env.NODE_ENV)
