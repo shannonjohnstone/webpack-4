@@ -51,7 +51,7 @@ if (!isProd) {
       enableBrotli: true
     }));
 
-    server.use(renderer());
+    server.use('*', renderer());
     server.listen(PORT, () => {
       console.log(`Server is listing on http://localhost:${PORT} in ${NODE_ENV}`);
     });

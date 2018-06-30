@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/shannonjohnstone/webpack-4#readme",
   "dependencies": {
+    "add": "^2.0.6",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
