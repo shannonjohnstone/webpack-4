@@ -8,7 +8,7 @@ class AppRoot extends React.Component {
       <div className="profile">
         {/* <img src={require("../images/dog.jpg")} /> */}
         {/* <h1>{MarkdownData.title}</h1> */}
-        <h1>Temp heading</h1>
+        <h1>Temp heading.</h1>
         {/* <div className='content' dangerouslySetInnerHTML={{ __html: MarkdownData.__content }}></div> */}
         <div className='content' dangerouslySetInnerHTML={{ __html: '<p>Temp text</p>' }}></div>
       </div>

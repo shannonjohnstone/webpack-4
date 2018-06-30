@@ -5,15 +5,13 @@
     "node_modules/**/node_modules"
   ],
   "verbose": true,
-  "execMap": {
-    "js": "node --harmony"
-  },
   "watch": [
     "config/",
-    "src/server/"
+    "src/server"
   ],
   "env": {
     "NODE_ENV": "development",
+    "BABEL_ENV": "production",
     "PORT": 8080
   },
   "ext": "js,json"

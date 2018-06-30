@@ -1,49 +1,53 @@
 import express from 'express';
 import path from 'path';
 import ReactDOMServer from 'react-dom/server';
-import AppRoot from '../components/AppRoot';
+import webpack from 'webpack';
+
+import configDevClient from '../../config/webpack.dev-client.js';
+import configDevServer from '../../config/webpack.dev-server.js';
+import configProdClient from '../../config/webpack.prod-client.js';
+import configProdServer from '../../config/webpack.prod-server.js';
 
 const server = express();
+
+const PORT = process.env.PORT || 8080;
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 const isProd = process.env.NODE_ENV === 'production';
 
 if (!isProd) {
-  const webpack = require('webpack');
-  const config = require('../../config/webpack.dev.js');
-  const compiler = webpack(config);
-  const webpackDevMiddleware = require('webpack-dev-middleware')(compiler, config.devServer);
+  console.log('Middlware enabled...');
+  const compiler = webpack([configDevClient, configDevServer]);
 
-  const webpackHotMiddleware = require('webpack-hot-middleware')(compiler);
+  const clientCompiler = compiler.compilers[0];
+  const serverCompiler = compiler.compilers[1];
+
+  const webpackDevMiddleware = require('webpack-dev-middleware')(
+    compiler,
+    configDevClient.devServer
+  );
+
+  const webpackHotMiddleware = require('webpack-hot-middleware')(
+    clientCompiler,
+    configDevClient.devServer
+  );
 
   server.use(webpackDevMiddleware);
   server.use(webpackHotMiddleware);
-  console.log('Running express webpack middleware ---------------------------');
+  console.log('Appliation running in development mode using express webpack middleware ---------------------------');
+} else {
+  const { renderer } = require('./rendering');
+
+  const expressStaticGzip = require('express-static-gzip');
+  server.use(expressStaticGzip('dist', {
+    enableBrotli: true
+  }));
+
+  server.get('*', (req, res) => {
+    res.send(renderer());
+  })
 }
 
-const expressStaticGzip = require('express-static-gzip');
-server.use(expressStaticGzip('dist', {
-  enableBrotli: true
-}));
-
-server.get('*', (req, res) => {
-  // const html = ReactDOMServer.renderToString();
-  const html = `
-    <html>
-      <head>
-        <link rel="stylesheet" href="/main.css" />
-      </head>
-      <body>
-        <div id="root">
-          ${ReactDOMServer.renderToString(<AppRoot />)}
-        </div>
-        <script src='vendor-bundle.js'></script>
-        <script src='main-bundle.js'></script>
-      </body>
-    </html>
-  `
-  res.send(html);
-})
-
-server.listen(process.env.PORT, () => {
-  console.log(`Server is listing on http://localhost:${process.env.PORT}`);
+server.listen(PORT, () => {
+  console.log(`Server is listing on http://localhost:${PORT} in ${NODE_ENV}`);
 });
