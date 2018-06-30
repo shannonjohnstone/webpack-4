@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const OptimizeCssPlugin = require('optimize-css-assets-webpack-plugin');
-const MinifyPlugin = require('babel-minify-webpack-plugin');
 const UglifyjsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const BrotliPlugin = require('brotli-webpack-plugin');
@@ -48,7 +47,7 @@ module.exports = {
         use: [MiniCSSExtractPlugin.loader, "css-loader"]
       },
       {
-        test: /\.jpg$/,
+        test: /\.(jpg|png|gif)$/,
         use: [
           {
             loader: "url-loader",
@@ -83,7 +82,6 @@ module.exports = {
       }
     }),
     new UglifyjsPlugin(),
-    // new MinifyPlugin(),
     new CompressionPlugin({
       algorithm: "gzip"
     }),

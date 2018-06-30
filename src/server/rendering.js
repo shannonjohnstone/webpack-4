@@ -1,20 +1,24 @@
+import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import AppRoot from '../components/AppRoot';
+import { StaticRouter } from 'react-router';
+import Routes from '../components/Routes';
 
-export const renderer = () => (res, req) => {
-  return `
-  <html>
-    <head>
-      <link rel="stylesheet" href="/main.css" />
-      <title>Dustins Blog.</title>
-    </head>
-    <body>
-      <div id="root">
-        ${ReactDOMServer.renderToString(<AppRoot />)}
-      </div>
-      <script src='vendor-bundle.js'></script>
-      <script src='main-bundle.js'></script>
-    </body>
-  </html>
-  `
+export default () => (req, res) => {
+  res.send(`
+    <html>
+      <head>
+        <link rel="stylesheet" href="/main.css" />
+        <title>Dustins Blog.</title>
+      </head>
+      <body>
+        <div id="root">${ReactDOMServer.renderToString(
+          <StaticRouter location={req.url} context={{}}>
+            <Routes />
+          </StaticRouter>
+        )}</div>
+        <script src='vendor-bundle.js'></script>
+        <script src='main-bundle.js'></script>
+      </body>
+    </html>
+  `)
 }
